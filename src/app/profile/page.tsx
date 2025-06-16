@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { signIn ,useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import React from "react";
@@ -9,32 +9,42 @@ export default function ProfilePage() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-
   const { data, isLoading } = api.post.getName.useQuery(undefined, {
-    enabled: status === "authenticated", 
+    enabled: status === "authenticated",
+  });
+  const updateToAdminMutation = api.post.updateToAdmin.useMutation({
+    onSuccess: async() => {
+      await signIn("credentials", { redirect: false, email: localStorage.getItem("email"), password: localStorage.getItem("password") }); 
+      router.refresh?.(); 
+      router.push("/admin");
+    },
   });
 
-  // console.log(session?.user.role)
+  const onMakeAdmin = async() => {
+    updateToAdminMutation.mutate({ email: session?.user.email || "" });
+  
+  };
+
 
   React.useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
     }
-    if(session?.user.role == "admin"){
+    if (session?.user.role == "admin") {
       router.push("/admin");
     }
   }, [status, router]);
 
   if (status === "loading") {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex h-screen items-center justify-center">
         <div className="text-lg font-semibold">Ачааллаж байна...</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+    <div className="mx-auto mt-10 w-full max-w-md rounded-lg bg-white p-6 shadow-md">
       <center>
         <h1>Profile Page</h1>
         <p>Welcome to your profile, {data ?? "..."}</p>
@@ -42,9 +52,15 @@ export default function ProfilePage() {
           onClick={() => {
             signOut({ callbackUrl: "/login" });
           }}
-          className="rounded-full mt-[50px] px-10 bg-red-500 py-3 font-semibold transition hover:bg-red-700"
+          className="mt-[50px] rounded-full bg-red-500 px-10 py-3 font-semibold transition hover:bg-red-700"
         >
           Logout
+        </button>
+        <button 
+        onClick={() => onMakeAdmin()}
+        className="mt-[50px] rounded-full bg-blue-500 px-10 py-3 font-semibold transition hover:bg-blue-700"
+        >
+          Admin boloh
         </button>
       </center>
     </div>

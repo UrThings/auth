@@ -79,9 +79,9 @@ export const authRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      if (ctx.session.user.role !== "admin") {
-        throw new Error("admin baih");
-      }
+      // if (ctx.session.user.role !== "admin") {
+      //   throw new Error("admin baih");
+      // }
 
       await ctx.db.user.update({
         where: {

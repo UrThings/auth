@@ -10,58 +10,66 @@ type UserProps = {
 };
 
 export function UserComponent({ name, email, role, refreshPage, page }: UserProps) {
-  // Хууль ёсны hook дуудах
   const deleteUserMutation = api.post.deleteUser.useMutation();
   const updateToAdminMutation = api.post.updateToAdmin.useMutation();
   const updateToUserMutation = api.post.updateToUser.useMutation();
 
-  // Event handler-ууд
   const onDelete = () => {
     deleteUserMutation.mutate({ email });
-    refreshPage(!page)
+    refreshPage(!page);
   };
 
   const onMakeAdmin = () => {
     updateToAdminMutation.mutate({ email });
-    refreshPage(!page)
+    refreshPage(!page);
   };
 
   const onMakeUser = () => {
     updateToUserMutation.mutate({ email });
-    refreshPage(!page)
+    refreshPage(!page);
   };
 
   return (
-    <div className="flex items-center justify-between border p-4 rounded-xl shadow mb-3 bg-white hover:shadow-lg transition">
-      <div>
-        <h2 className="font-bold text-xl text-gray-800">{name}</h2>
-        <p className="text-sm text-gray-600">📧 {email}</p>
-        <p className="text-sm text-gray-500">🎖️ Role: {role}</p>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        {role !== "admin" ? (
-          <button
-            onClick={onMakeAdmin}
-            className="bg-blue-600 w-[150px] text-white text-[12px] px-3 py-1 rounded hover:bg-blue-700 transition"
+    <div className="flex items-center justify-between gap-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md mb-4">
+      {/* Зүүн талын мэдээлэл */}
+      <div className="flex items-center gap-6 w-full">
+        <div className="flex items-center justify-between min-w-[500px] w-[70%]">
+          <span className="text-base font-semibold text-gray-800">Name: {name}</span>
+          <span className="text-sm text-gray-500">📧Email: {email}</span>
+          <span
+            className={`mt-1 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium ${
+              role === "admin" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
+            }`}
           >
-            Admin болгох
-          </button>
-        ) : (
-          <button
-            onClick={onMakeUser}
-            className="bg-blue-600 w-[150px] text-white text-[12px] px-3 py-1 rounded hover:bg-blue-700 transition"
-          >
-            User болгох
-          </button>
-        )}
+            🎖️ Role: {role}
+          </span>
+        </div>
 
-        <button
-          onClick={onDelete}
-          className="bg-red-500 w-[150px] text-[12px] text-white px-3 py-1 rounded hover:bg-red-600 transition"
-        >
-          Устгах
-        </button>
+        {/* Баруун талын товчлуурууд */}
+        <div className="flex gap-3 ml-auto">
+          {role !== "admin" ? (
+            <button
+              onClick={onMakeAdmin}
+              className="rounded-md bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-blue-700"
+            >
+              Admin болгох
+            </button>
+          ) : (
+            <button
+              onClick={onMakeUser}
+              className="rounded-md bg-blue-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-blue-600"
+            >
+              User болгох
+            </button>
+          )}
+
+          <button
+            onClick={onDelete}
+            className="rounded-md bg-red-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-red-600"
+          >
+            Устгах
+          </button>
+        </div>
       </div>
     </div>
   );
