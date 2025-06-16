@@ -9,13 +9,19 @@ export default function ProfilePage() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
+
   const { data, isLoading } = api.post.getName.useQuery(undefined, {
     enabled: status === "authenticated", 
   });
 
+  // console.log(session?.user.role)
+
   React.useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
+    }
+    if(session?.user.role == "admin"){
+      router.push("/admin");
     }
   }, [status, router]);
 
