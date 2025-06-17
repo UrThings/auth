@@ -6,39 +6,58 @@ type UserProps = {
   email: string;
   role: string;
   refreshPage: (val: boolean) => void;
-  page: boolean;
+  refresh: boolean;
+  handleRefetch: Function
 };
 
-export function UserComponent({ name, email, role, refreshPage, page }: UserProps) {
+export function UserComponent({
+  name,
+  email,
+  role,
+  refreshPage,
+  refresh,
+  handleRefetch
+}: UserProps) {
   const deleteUserMutation = api.post.deleteUser.useMutation();
   const updateToAdminMutation = api.post.updateToAdmin.useMutation();
   const updateToUserMutation = api.post.updateToUser.useMutation();
 
   const onDelete = () => {
     deleteUserMutation.mutate({ email });
-    refreshPage(!page);
+    refreshPage(!refresh);
+    alert("amjilttai");
+    handleRefetch();
   };
 
   const onMakeAdmin = () => {
     updateToAdminMutation.mutate({ email });
-    refreshPage(!page);
+    refreshPage(!refresh);
+    alert("amjilttai");
+    handleRefetch();
   };
 
   const onMakeUser = () => {
     updateToUserMutation.mutate({ email });
-    refreshPage(!page);
+    refreshPage(!refresh);
+    alert("amjilttai");
+    handleRefetch();
+    
   };
 
   return (
-    <div className="flex items-center justify-between gap-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md mb-4">
+    <div className="mb-4 flex items-center justify-between gap-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md">
       {/* Зүүн талын мэдээлэл */}
-      <div className="flex items-center gap-6 w-full">
-        <div className="flex items-center justify-between min-w-[500px] w-[70%]">
-          <span className="text-base font-semibold text-gray-800">Name: {name}</span>
+      <div className="flex w-full items-center gap-6">
+        <div className="flex w-[70%] min-w-[500px] items-center justify-between">
+          <span className="text-base font-semibold text-gray-800">
+            Name: {name}
+          </span>
           <span className="text-sm text-gray-500">📧Email: {email}</span>
           <span
             className={`mt-1 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium ${
-              role === "admin" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
+              role === "admin"
+                ? "bg-green-100 text-green-700"
+                : "bg-yellow-100 text-yellow-700"
             }`}
           >
             🎖️ Role: {role}
@@ -46,7 +65,7 @@ export function UserComponent({ name, email, role, refreshPage, page }: UserProp
         </div>
 
         {/* Баруун талын товчлуурууд */}
-        <div className="flex gap-3 ml-auto">
+        <div className="ml-auto flex gap-3">
           {role !== "admin" ? (
             <button
               onClick={onMakeAdmin}

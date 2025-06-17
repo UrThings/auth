@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import React, { useEffect } from "react";
 import { UserComponent } from "../_components/user";
+import { success } from "zod/v4";
+
 
 export default function AdminPage() {
   const router = useRouter();
@@ -20,7 +22,7 @@ export default function AdminPage() {
     enabled: status === "authenticated" && session?.user.role === "admin",
   });
 
-  // Role шалгах логик
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
@@ -29,12 +31,14 @@ export default function AdminPage() {
     }
   }, [status, session?.user.role, router]);
 
-  // refresh болгонд refetch хийх
-  useEffect(() => {
-    if (status === "authenticated" && session?.user.role === "admin") {
-      refetch();
-    }
-  }, [refresh]);
+
+
+
+const handleRefetch = async () => {
+  const result = await refetch();
+};
+
+
 
   if (status === "loading" || isLoading) {
     return (
@@ -60,8 +64,9 @@ export default function AdminPage() {
               name={user.name ?? ""}
               email={user.email ?? ""}
               role={user.role ?? "user"}
-              page={refresh}
+              refresh={refresh}
               refreshPage={() => setRefresh((prev) => !prev)}
+              handleRefetch={()=> handleRefetch()}
             />
           ))}
         </ul>
