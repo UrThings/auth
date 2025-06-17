@@ -50,7 +50,7 @@ export function UserComponent({
       <div className="flex w-full items-center gap-6">
         <div className="flex w-[70%] min-w-[500px] items-center justify-between">
           <span className="text-base font-semibold text-gray-800">
-            Name: {name}
+            Name: {name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()}
           </span>
           <span className="text-sm text-gray-500">📧Email: {email}</span>
           <span

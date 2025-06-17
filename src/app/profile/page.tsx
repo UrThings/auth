@@ -16,7 +16,7 @@ export default function ProfilePage() {
     onSuccess: async() => {
       await signIn("credentials", { redirect: false, email: localStorage.getItem("email"), password: localStorage.getItem("password") }); 
       router.refresh?.(); 
-      router.push("/admin");
+      router.push("/admin/user");
     },
   });
 
@@ -31,7 +31,7 @@ export default function ProfilePage() {
       router.push("/login");
     }
     if (session?.user.role == "admin") {
-      router.push("/admin");
+      router.push("/admin/user");
     }
   }, [status, router]);
 

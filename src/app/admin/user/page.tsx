@@ -4,9 +4,8 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import React, { useEffect } from "react";
-import { UserComponent } from "../_components/user";
+import { UserComponent } from "~/app/_components/user";
 import { success } from "zod/v4";
-
 
 export default function AdminPage() {
   const router = useRouter();
@@ -22,7 +21,6 @@ export default function AdminPage() {
     enabled: status === "authenticated" && session?.user.role === "admin",
   });
 
-
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
@@ -31,14 +29,9 @@ export default function AdminPage() {
     }
   }, [status, session?.user.role, router]);
 
-
-
-
-const handleRefetch = async () => {
-  const result = await refetch();
-};
-
-
+  const handleRefetch = async () => {
+    const result = await refetch();
+  };
 
   if (status === "loading" || isLoading) {
     return (
@@ -53,7 +46,22 @@ const handleRefetch = async () => {
   }
 
   return (
+    <div>
+      <div className="w-full h-[100px] bg-blue-300 flex items-center justify-around">
+        <button onClick={() => {
+          router.push("/admin/user")
+        }} className="rounded-md w-[150px] h-[50px] bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-blue-700">
+          Users
+        </button>
+        <div className="text-[60px] font-bold text-blue-600 " >Admin</div>
+        <button onClick={() => {
+            router.push("/admin/question")
+        }} className="rounded-md w-[150px] h-[50px] bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-blue-700">
+          question
+        </button>
+      </div>
     <div className="mx-auto mt-10 w-full max-w-[1400px] rounded-lg bg-white p-6 shadow-md">
+      
       <center>
         <h1 className="text-[32px] font-bold text-blue-500">Admin Page</h1>
         <p>Таны хэрэглэгчийн жагсаалт:</p>
@@ -66,7 +74,7 @@ const handleRefetch = async () => {
               role={user.role ?? "user"}
               refresh={refresh}
               refreshPage={() => setRefresh((prev) => !prev)}
-              handleRefetch={()=> handleRefetch()}
+              handleRefetch={() => handleRefetch()}
             />
           ))}
         </ul>
@@ -80,5 +88,7 @@ const handleRefetch = async () => {
         </button>
       </center>
     </div>
+    </div>
+    
   );
 }

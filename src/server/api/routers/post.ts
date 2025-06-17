@@ -1,41 +1,62 @@
-// import { z } from "zod";
+import { z } from "zod";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
-// import {
-//   createTRPCRouter,
-//   protectedProcedure,
-//   publicProcedure,
-// } from "~/server/api/trpc";
+export const postRouter = createTRPCRouter({
+  hello: publicProcedure
+    .input(z.object({ text: z.string() }))
+    .query(({ input }) => {
+      return {
+        greeting: `Hello ${input.text}`,
+      };
+    }),
 
-// export const postRouter = createTRPCRouter({
-//   hello: publicProcedure
-//     .input(z.object({ text: z.string() }))
-//     .query(({ input }) => {
-//       return {
-//         greeting: `Hello ${input.text}`,
-//       };
-//     }),
+  createQuestion: protectedProcedure
+  .input(z.object({
+    title: z.string(),
+    question: z.string(),
+    answer: z.string(),
+    // userId-г авирахгүй!
+  }))
+  .mutation(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id;
 
-//   create: protectedProcedure
-//     .input(z.object({ name: z.string().min(1) }))
-//     .mutation(async ({ ctx, input }) => {
-//       return ctx.db.post.create({
-//         data: {
-//           name: input.name,
-//           createdBy: { connect: { id: ctx.session.user.id } },
-//         },
-//       });
-//     }),
+    return ctx.db.question.create({
+      data: {
+        title: input.title,
+        question: input.question,
+        answer: input.answer,
+        userId,
+      },
+    });
+  }),
 
-//   getLatest: protectedProcedure.query(async ({ ctx }) => {
-//     const post = await ctx.db.post.findFirst({
-//       orderBy: { createdAt: "desc" },
-//       where: { createdBy: { id: ctx.session.user.id } },
-//     });
 
-//     return post ?? null;
-//   }),
+  answerTheQuestion: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        QuestionId: z.string(),
+        text: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.result.create({
+        data: {
+          userId: input.userId,
+          QuestionId: input.QuestionId,
+          text: input.text,
+        },
+      });
+    }),
 
-//   getSecretMessage: protectedProcedure.query(() => {
-//     return "you can now see this secret message!";
-//   }),
-// });
+  getQuestion: protectedProcedure.query(({ ctx }) => {
+    if (ctx.session.user.role !== "admin") {
+      throw new Error("admin baih ystoi");
+    }
+    return ctx.db.question.findMany();
+  }),
+});
