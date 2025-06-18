@@ -38,7 +38,7 @@ export default function ProfilePage() {
   }, [name, jobTitle, website, about]);
 
   return (
-    <div className="mx-auto mt-10 max-w-3xl space-y-6 p-6">
+    <div className="mx-auto mt-10 min-w-[300px] md:min-w-[600px] w-[70vw] max-w-[900px] space-y-6 p-6">
       {/* Top Profile Section */}
       <div className="flex items-center gap-6">
         <Image
