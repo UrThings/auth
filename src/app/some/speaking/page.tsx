@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import EditableText from "~/app/_components/edit_able_text";
 
 type Speaking = {
   year: string;
@@ -69,12 +70,12 @@ export default function Speaking() {
   };
 
   return (
-    <div className="ml-[50px] grid gap-6">
-      <div className="flex w-[700px] justify-between text-[20px]">
-        <div>Speakings</div>
+    <div className="grid gap-6">
+      <div className="flex justify-between">
+        <div>Speaking</div>
         <button
           onClick={() => setAddSpeakingButton(!addSpeakingButton)}
-          className="w-[40px] border rounded"
+          className="w-[40px] rounded border"
           aria-label={addSpeakingButton ? "Close form" : "Add speaking"}
         >
           {!addSpeakingButton ? "+" : "-"}
@@ -158,8 +159,6 @@ export default function Speaking() {
             />
           </div>
 
-          
-
           {/* Submit Button */}
           <div>
             <button
@@ -175,17 +174,32 @@ export default function Speaking() {
       {/* Speakings List */}
       <div className="space-y-6">
         {speakings.map((speaking, idx) => (
-          <div key={idx} className="flex flex-col gap-2 border-b pb-4">
-            <div className="flex gap-2 font-semibold text-lg">
-              <div>{speaking.year}</div>
+          <div key={idx} className="flex flex-row gap-30 pb-4">
+            <div className="text-md flex text-gray-400">
+              <div>
+                <EditableText value={speaking.year} onSave={() => setYear} />
+              </div>
             </div>
-            <div
-              className="cursor-pointer hover:underline text-blue-600"
-              onClick={() => router.push(`/${speaking.url}`)}
-            >
-              {speaking.title}
+            <div>
+              <div
+                className="mb-[3px] cursor-pointer hover:underline"
+                onClick={() =>
+                  router.push(
+                    `/${(
+                      <EditableText
+                        value={speaking.url}
+                        onSave={() => setUrl}
+                      />
+                    )}`,
+                  )
+                }
+              >
+                <EditableText value={speaking.title} onSave={() => setTitle} />
+              </div>
+              <div className="text-gray-600">
+                <EditableText value={speaking.city} onSave={() => setcity} />
+              </div>
             </div>
-            <div>{speaking.city}</div>
           </div>
         ))}
       </div>

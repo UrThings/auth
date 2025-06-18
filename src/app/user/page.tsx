@@ -6,6 +6,9 @@ import EditableText from "../_components/edit_able_text";
 import { api } from "~/trpc/react";
 import WorkExperience from "../some/page";
 import Writing from "../some/writing/page";
+import SideProject from "../some/sproject/page";
+import Education from "../some/education/page";
+import Speaking from "../some/speaking/page";
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
@@ -35,7 +38,7 @@ export default function ProfilePage() {
   }, [name, jobTitle, website, about]);
 
   return (
-    <div className="mx-auto mt-10 max-w-3xl border space-y-6 p-6">
+    <div className="mx-auto mt-10 max-w-3xl space-y-6 p-6">
       {/* Top Profile Section */}
       <div className="flex items-center gap-6">
         <Image
@@ -67,18 +70,22 @@ export default function ProfilePage() {
           />
         </div>
       </div>
-
-      {/* About Section */}
-      <div className="mt-18 rounded-md py-4">
-        <h2 className="mb-2">About</h2>
-        <EditableText
-          className="text-gray-600"
-          value={about}
-          onSave={() => setAbout}
-        />
+      <div className="space-y-14">
+        {/* About Section */}
+        <div className="mt-18 rounded-md py-4">
+          <h2 className="mb-2">About</h2>
+          <EditableText
+            className="text-gray-600"
+            value={about}
+            onSave={() => setAbout}
+          />
+        </div>
+        <WorkExperience />
+        <Writing />
+        <Speaking />
+        <SideProject />
+        <Education />
       </div>
-      <WorkExperience/>
-      <Writing/>
     </div>
   );
 }

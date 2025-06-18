@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import EditableText from "~/app/_components/edit_able_text";
 
 type Education = {
   startYear: string;
@@ -60,12 +61,12 @@ export default function Education() {
   };
 
   return (
-    <div className="ml-[50px] grid gap-6">
-      <div className="flex w-[700px] justify-between text-[20px]">
+    <div className="grid gap-6">
+      <div className="flex justify-between">
         <div>Educations</div>
         <button
           onClick={() => setAddEducationButton(!addEducationButton)}
-          className="w-[40px] border rounded"
+          className="w-[40px] rounded border"
           aria-label={addEducationButton ? "Close form" : "Add education"}
         >
           {!addEducationButton ? "+" : "-"}
@@ -164,12 +165,30 @@ export default function Education() {
       {/* Education List */}
       <div className="space-y-6">
         {educations.map((education, idx) => (
-          <div key={idx} className="flex flex-col gap-2 border-b pb-4">
-            <div className="flex gap-2 font-semibold text-lg">
-              <div>{education.startYear}</div>-<div>{education.endYear}</div>
+          <div key={idx} className="flex flex-row gap-16 pb-4">
+            <div className="text-md flex gap-2 text-gray-400">
+              <div>
+                <EditableText
+                  value={education.startYear}
+                  onSave={() => setStartYear}
+                />
+              </div>
+              -
+              <div>
+                <EditableText
+                  value={education.endYear}
+                  onSave={() => setEndYear}
+                />
+              </div>
             </div>
-            <div className="text-blue-600 font-medium">{education.title}</div>
-            <div className="text-gray-600">{education.city}</div>
+            <div className="mb-[3px]">
+              <div>
+                <EditableText value={education.title} onSave={() => setTitle} />
+              </div>
+              <div className="text-gray-600">
+                <EditableText value={education.city} onSave={() => setCity} />
+              </div>
+            </div>
           </div>
         ))}
       </div>

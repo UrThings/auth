@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import EditableText from "~/app/_components/edit_able_text";
 
 type Project = {
   year: string;
@@ -57,12 +58,12 @@ export default function SideProject() {
   };
 
   return (
-    <div className="ml-[50px] grid gap-6">
-      <div className="flex w-[700px] justify-between text-[20px]">
+    <div className="grid gap-6">
+      <div className="flex justify-between">
         <div>Side Projects</div>
         <button
           onClick={() => setAddProjectButton(!addProjectButton)}
-          className="w-[40px] border rounded"
+          className="w-[40px] rounded border"
           aria-label={addProjectButton ? "Close form" : "Add project"}
         >
           {!addProjectButton ? "+" : "-"}
@@ -143,15 +144,21 @@ export default function SideProject() {
       {/* Projects List */}
       <div className="space-y-6">
         {projects.map((project, idx) => (
-          <div key={idx} className="flex flex-col gap-2 border-b pb-4">
-            <div className="flex gap-2 font-semibold text-lg">
-              <div>{project.year}</div>
+          <div key={idx} className="flex flex-row gap-30 pb-4">
+            <div className="text-md flex text-gray-400">
+              <div>
+                <EditableText value={project.year} onSave={() => setYear} />
+              </div>
             </div>
             <div
-              className="cursor-pointer hover:underline text-blue-600"
-              onClick={() => router.push(`/${project.url}`)}
+              className="cursor-pointer hover:underline"
+              onClick={() =>
+                router.push(
+                  `/${(<EditableText value={project.url} onSave={() => setUrl} />)}`,
+                )
+              }
             >
-              {project.title}
+              <EditableText value={project.title} onSave={() => setTitle} />
             </div>
           </div>
         ))}

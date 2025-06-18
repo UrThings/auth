@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import EditableText from "~/app/_components/edit_able_text";
 
 type Writing = {
   year: string;
@@ -70,11 +71,11 @@ export default function Writing() {
 
   return (
     <div className="grid gap-6">
-      <div className="flex w-[700px] justify-between text-base">
-        <div>Writings</div>
+      <div className="flex justify-between text-base">
+        <div>Writing</div>
         <button
           onClick={() => setAddWritingButton(!addWritingButton)}
-          className="w-[40px] border rounded"
+          className="w-[40px] rounded border"
           aria-label={addWritingButton ? "Close form" : "Add writing"}
         >
           {!addWritingButton ? "+" : "-"}
@@ -191,18 +192,32 @@ export default function Writing() {
       {/* Writings List */}
       <div className="space-y-6">
         {writings.map((writing, idx) => (
-          <div key={idx} className="flex flex-col gap-2 border-b pb-4">
-            <div className="flex gap-2 font-semibold text-lg">
-              <div>{writing.year}</div>
+          <div key={idx} className="flex flex-row gap-30 pb-4">
+            <div className="text-md flex gap-2 text-gray-400">
+              <EditableText value={writing.year} onSave={() => setYear} />
             </div>
-            <div
-              className="cursor-pointer hover:underline text-blue-600"
-              onClick={() => router.push(`/${writing.url}`)}
-            >
-              {writing.title}
+            <div className="">
+              <div
+                className="mb-[3px] cursor-pointer hover:underline"
+                onClick={() =>
+                  router.push(
+                    `/${(
+                      <EditableText value={writing.url} onSave={() => setUrl} />
+                    )}`,
+                  )
+                }
+              >
+                <EditableText value={writing.title} onSave={() => setTitle} />
+              </div>
+              <div className="text-gray-600">
+                {
+                  <EditableText
+                    value={writing.teaminfo}
+                    onSave={() => setTeaminfo}
+                  />
+                }
+              </div>
             </div>
-            <div>{writing.teaminfo}</div>
-           
           </div>
         ))}
       </div>

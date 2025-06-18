@@ -200,30 +200,26 @@ export default function WorkExperience() {
       <div className="space-y-6">
         {works.map((work, idx) => (
           <div key={idx} className="flex flex-row gap-16 pb-2">
-            <div className="text-md flex gap-2">
+            <div className="text-md flex gap-2 text-gray-400">
               <EditableText
-                className="text-gray-400"
                 value={work.startDate}
                 onSave={() => setStartDate}
               />
-              <div className="text-gray-400">-</div>
-              <EditableText
-                className="text-gray-400"
-                value={work.endDate}
-                onSave={() => setEndDate}
-              />
+              <div>-</div>
+              <EditableText value={work.endDate} onSave={() => setEndDate} />
             </div>
             <div>
               <EditableText
-                className="cursor-pointer text-md hover:underline mb-[3px]"
+                className="text-md mb-[3px] cursor-pointer hover:underline"
                 value={work.company}
                 onSave={() => setCompany}
               />
-              <EditableText 
-              className="text-gray-600"
-              value={work.city} 
-              onSave={() => setCity} />
-              <div className="flex gap-5 overflow-x-auto mt-8">
+              <EditableText
+                className="text-gray-600"
+                value={work.city}
+                onSave={() => setCity}
+              />
+              <div className="mt-8 flex gap-5 overflow-x-auto">
                 {work.img.map((imgUrl, i) => (
                   <img
                     key={i}
