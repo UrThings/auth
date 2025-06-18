@@ -9,7 +9,7 @@ type Project = {
   url: string;
 };
 
-export default function ProfilePage() {
+export default function SideProject() {
   const [addProjectButton, setAddProjectButton] = useState(false);
 
   // Form state

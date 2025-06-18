@@ -1,14 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface EditableTextProps {
   value: string;
   onSave: (newValue: string) => void;
   className?: string;
+  placeholder?: string;
 }
 
-export default function EditableText({ value, onSave, className }: EditableTextProps) {
+export default function EditableText({
+  value,
+  onSave,
+  className,
+  placeholder,
+}: EditableTextProps) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(value);
+
+  useEffect(() => {
+    setText(value);
+  }, [value]);
 
   const handleDoubleClick = () => {
     setEditing(true);
@@ -28,20 +38,33 @@ export default function EditableText({ value, onSave, className }: EditableTextP
     }
   };
 
+  const isEmpty = !text.trim();
+
   return (
-    <div onDoubleClick={handleDoubleClick} className={className}>
+    <div onDoubleClick={handleDoubleClick} className={`group ${className ?? ''}`}>
       {editing ? (
         <input
           autoFocus
           type="text"
           value={text}
+          placeholder={placeholder}
           onChange={(e) => setText(e.target.value)}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
-          className="px-2 py-1 w-full"
+          className={`
+            rounded-md px-2 py-1 border 
+            ${isEmpty ? 'w-24 h-8 text-gray-400' : 'border-transparent'}
+          `}
         />
       ) : (
-        <span className="cursor-pointer">{text}</span>
+        <span
+          className={`
+            cursor-pointer transition inline-block
+            ${isEmpty ? 'text-gray-400 border px-2 py-1 rounded-md w-24 h-8' : ''}
+          `}
+        >
+          {isEmpty ? placeholder : text}
+        </span>
       )}
     </div>
   );

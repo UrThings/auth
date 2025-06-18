@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import ImagesUploader from "~/app/_components/imagesUploader";
 import { useRouter } from "next/navigation";
 
 type Writing = {
@@ -12,7 +11,7 @@ type Writing = {
   url2: string;
 };
 
-export default function ProfilePage() {
+export default function Writing() {
   const [addWritingButton, setAddWritingButton] = useState(false);
 
   // Form state
@@ -21,7 +20,7 @@ export default function ProfilePage() {
   const [teaminfo, setTeaminfo] = useState("");
   const [url, setUrl] = useState("");
   const [url2, setUrl2] = useState("");
-  const [images, setImages] = useState<string[]>([]); // Хэрэв зураг оруулах шаардлагатай бол
+
 
   const [writings, setWritings] = useState<Writing[]>([
     {
@@ -70,8 +69,8 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="ml-[50px] grid gap-6">
-      <div className="flex w-[700px] justify-between text-[20px]">
+    <div className="grid gap-6">
+      <div className="flex w-[700px] justify-between text-base">
         <div>Writings</div>
         <button
           onClick={() => setAddWritingButton(!addWritingButton)}
@@ -203,9 +202,7 @@ export default function ProfilePage() {
               {writing.title}
             </div>
             <div>{writing.teaminfo}</div>
-            <div className="flex gap-5 overflow-x-auto">
-              <iframe src={writing.url2} frameBorder="0" className="w-full h-[300px]" />
-            </div>
+           
           </div>
         ))}
       </div>

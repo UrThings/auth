@@ -9,7 +9,7 @@ type Education = {
   city: string;
 };
 
-export default function ProfilePage() {
+export default function Education() {
   const [addEducationButton, setAddEducationButton] = useState(false);
 
   // Form state

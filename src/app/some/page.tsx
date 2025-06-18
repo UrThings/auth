@@ -3,6 +3,7 @@
 import { useState } from "react";
 import ImagesUploader from "../_components/imagesUploader";
 import { useRouter } from "next/navigation";
+import EditableText from "../_components/edit_able_text";
 
 type Work = {
   startDate: string;
@@ -13,7 +14,7 @@ type Work = {
   url: string;
 };
 
-export default function ProfilePage() {
+export default function WorkExperience() {
   const [addWorkButton, setAddWorkButton] = useState(false);
 
   // Form-ийн state
@@ -78,12 +79,12 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="ml-[50px] grid gap-6">
-      <div className="flex w-[700px] justify-between text-[20px]">
+    <div className="grid gap-6">
+      <div className="flex justify-between text-base">
         <div>Work Experience</div>
         <button
           onClick={() => setAddWorkButton(!addWorkButton)}
-          className="w-[40px] border rounded"
+          className="w-[40px] rounded border"
           aria-label={addWorkButton ? "Close form" : "Add work"}
         >
           {!addWorkButton ? "+" : "-"}
@@ -198,26 +199,40 @@ export default function ProfilePage() {
       {/* Work List */}
       <div className="space-y-6">
         {works.map((work, idx) => (
-          <div key={idx} className="flex flex-col gap-2 border-b pb-4">
-            <div className="flex gap-2 font-semibold text-lg">
-              <div>{work.startDate}</div>-<div>{work.endDate}</div>
+          <div key={idx} className="flex flex-row gap-16 pb-2">
+            <div className="text-md flex gap-2">
+              <EditableText
+                className="text-gray-400"
+                value={work.startDate}
+                onSave={() => setStartDate}
+              />
+              <div className="text-gray-400">-</div>
+              <EditableText
+                className="text-gray-400"
+                value={work.endDate}
+                onSave={() => setEndDate}
+              />
             </div>
-            <div
-              className="cursor-pointer  hover:underline"
-              onClick={() => router.push(`/${work.url}`)}
-            >
-              {work.company}
-            </div>
-            <div>{work.city}</div>
-            <div className="flex gap-5 overflow-x-auto">
-              {work.img.map((imgUrl, i) => (
-                <img
-                  key={i}
-                  className="h-[150px] w-auto rounded-lg"
-                  src={imgUrl}
-                  alt={`Work image ${i + 1}`}
-                />
-              ))}
+            <div>
+              <EditableText
+                className="cursor-pointer text-md hover:underline mb-[3px]"
+                value={work.company}
+                onSave={() => setCompany}
+              />
+              <EditableText 
+              className="text-gray-600"
+              value={work.city} 
+              onSave={() => setCity} />
+              <div className="flex gap-5 overflow-x-auto mt-8">
+                {work.img.map((imgUrl, i) => (
+                  <img
+                    key={i}
+                    className="h-[150px] w-auto rounded-lg"
+                    src={imgUrl}
+                    alt={`Work image ${i + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         ))}

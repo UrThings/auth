@@ -3,9 +3,14 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import EditableText from "../_components/edit_able_text";
+import { api } from "~/trpc/react";
+import WorkExperience from "../some/page";
+import Writing from "../some/writing/page";
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
+
+  const { mutate: updateProfile } = api.profile.updateTheProfile.useMutation();
 
   // Profile data
   const [name, setName] = useState("");
@@ -15,33 +20,22 @@ export default function ProfilePage() {
 
   // Simulated fetch (in real case, replace this with tRPC or fetch call)
   useEffect(() => {
-    const fetchProfile = async () => {
-      await new Promise((res) => setTimeout(res, 500));
+    if (!loading) {
+      const timeout = setTimeout(() => {
+        updateProfile({
+          name,
+          work_city: jobTitle,
+          webUrl: website,
+          about,
+        });
+      }, 1000); // 1 секунд хүлээгээд хадгална (debounce)
 
-      const data = {
-        name: "Sara Lawrence",
-        jobTitle: "Design in San Francisco",
-        website: "https://create.t3.gg",
-        about:
-          "I’m a passionate UX designer striving to create intuitive and engaging experiences. I’m a big believer that things can always be simpler than we think.",
-      };
-
-      setName(data.name);
-      setJobTitle(data.jobTitle);
-      setWebsite(data.website);
-      setAbout(data.about);
-      setLoading(false);
-    };
-
-    fetchProfile();
-  }, []);
-
-  if (loading) {
-    return <p className="text-center text-gray-500">Loading profile...</p>;
-  }
+      return () => clearTimeout(timeout); // өмнөх хадгалах давхардлыг цуцлах
+    }
+  }, [name, jobTitle, website, about]);
 
   return (
-    <div className="mx-auto mt-10 max-w-2xl space-y-6 p-6">
+    <div className="mx-auto mt-10 max-w-3xl border space-y-6 p-6">
       {/* Top Profile Section */}
       <div className="flex items-center gap-6">
         <Image
@@ -49,43 +43,42 @@ export default function ProfilePage() {
           alt="Profile"
           width={130}
           height={130}
-          className="rounded-full object-cover"
+          className="bo rounded-full object-cover"
         />
 
         <div className="flex flex-col gap-1">
-          <EditableText className="text-2xl" value={name} onSave={setName} />
           <EditableText
-            className="text-lg text-gray-600"
-            value={jobTitle}
-            onSave={setJobTitle}
+            placeholder="Your name"
+            className="text-base"
+            value={name}
+            onSave={() => setName}
           />
           <EditableText
+            placeholder="----"
+            className="text-lg text-gray-600"
+            value={jobTitle}
+            onSave={() => setJobTitle}
+          />
+          <EditableText
+            placeholder="url"
             className="flex w-fit items-center justify-center rounded-2xl bg-gray-100 px-4 py-1.5 text-center text-sm text-gray-600"
             value={website}
-            onSave={setWebsite}
+            onSave={() => setWebsite}
           />
         </div>
       </div>
 
       {/* About Section */}
-      <div className="mt-18 rounded-md bg-gray-100 p-4">
+      <div className="mt-18 rounded-md py-4">
         <h2 className="mb-2">About</h2>
         <EditableText
           className="text-gray-600"
           value={about}
-          onSave={setAbout}
+          onSave={() => setAbout}
         />
       </div>
-
-      {/* Work Experience */}
-      <div className="mt-18 rounded-md bg-gray-100 p-4">
-        <h2 className="mb-2">Work Experience</h2>
-        <EditableText
-          className="text-gray-600"
-          value={about}
-          onSave={setAbout}
-        />
-      </div>
+      <WorkExperience/>
+      <Writing/>
     </div>
   );
 }

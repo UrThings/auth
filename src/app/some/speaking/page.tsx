@@ -11,7 +11,7 @@ type Speaking = {
   url2: string;
 };
 
-export default function ProfilePage() {
+export default function Speaking() {
   const [addSpeakingButton, setAddSpeakingButton] = useState(false);
 
   // Form state
