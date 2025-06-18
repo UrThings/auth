@@ -38,7 +38,7 @@ export default function EditableText({ value, onSave, className }: EditableTextP
           onChange={(e) => setText(e.target.value)}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
-          className="border rounded px-2 py-1 w-full"
+          className="px-2 py-1 w-full"
         />
       ) : (
         <span className="cursor-pointer">{text}</span>

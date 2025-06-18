@@ -53,18 +53,14 @@ export default function ProfilePage() {
         />
 
         <div className="flex flex-col gap-1">
+          <EditableText className="text-2xl" value={name} onSave={setName} />
           <EditableText
-            className="text-2xl"
-            value={name}
-            onSave={setName}
-          />
-          <EditableText
-            className="text-gray-600 text-lg"
+            className="text-lg text-gray-600"
             value={jobTitle}
             onSave={setJobTitle}
           />
           <EditableText
-            className="text-blue-600 underline"
+            className="flex w-fit items-center justify-center rounded-2xl bg-gray-100 px-4 py-1.5 text-center text-sm text-gray-600"
             value={website}
             onSave={setWebsite}
           />
@@ -73,14 +69,22 @@ export default function ProfilePage() {
 
       {/* About Section */}
       <div className="mt-18 rounded-md bg-gray-100 p-4">
-        <h2 className="mb-2 font-semibold text-red">About</h2>
-        <EditableText className="mt-10" value={about} onSave={setAbout} />
+        <h2 className="mb-2">About</h2>
+        <EditableText
+          className="text-gray-600"
+          value={about}
+          onSave={setAbout}
+        />
       </div>
 
       {/* Work Experience */}
       <div className="mt-18 rounded-md bg-gray-100 p-4">
-        <h2 className="mb-2 font-semibold text-red">Work Experience</h2>
-        <EditableText value={about} onSave={setAbout} />
+        <h2 className="mb-2">Work Experience</h2>
+        <EditableText
+          className="text-gray-600"
+          value={about}
+          onSave={setAbout}
+        />
       </div>
     </div>
   );
