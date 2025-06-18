@@ -23,7 +23,7 @@ export default function ImagesUploader({
         formData.append("file", file);
         formData.append(
           "upload_preset",
-          process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET as string
+          process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET as string,
         );
 
         const res = await fetch(
@@ -31,7 +31,7 @@ export default function ImagesUploader({
           {
             method: "POST",
             body: formData,
-          }
+          },
         );
 
         const data = await res.json();
@@ -58,6 +58,7 @@ export default function ImagesUploader({
         type="file"
         accept="image/*"
         multiple
+        className="block w-full text-sm text-gray-600 transition file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
         onChange={handleFileChange}
         disabled={uploading}
       />
@@ -68,7 +69,7 @@ export default function ImagesUploader({
             key={index}
             src={url}
             alt={`Uploaded preview ${index + 1}`}
-            className="h-32 w-32 object-cover rounded border"
+            className="h-32 w-32 rounded border object-cover"
           />
         ))}
       </div>
