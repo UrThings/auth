@@ -4,7 +4,6 @@ import { signIn, useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import React from "react";
-import QuestionListForUsers from "../_components/QuestionListForUsers";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -29,9 +28,7 @@ export default function ProfilePage() {
     updateToAdminMutation.mutate({ email: session?.user.email || "" });
   };
 
-  const { data: users, error } = api.question.getQuestion.useQuery(undefined, {
-    enabled: status === "authenticated"
-  });
+
 
   React.useEffect(() => {
     if (status === "unauthenticated") {
@@ -70,24 +67,7 @@ export default function ProfilePage() {
           Admin boloh
         </button>
       </center>
-      <ul className="mt-[50px] grid grid-cols-2">
-        {users?.map((user) => (
-          <QuestionListForUsers
-            key={user.id} // unique key-г яг энд зааж өгөх хэрэгтэй
-            questions={[
-              {
-                id: user.id ?? "",
-                title: user.title,
-                question: user.question ?? "",
-                answer: user.answer,
-                user: {
-                  name: "User name",
-                },
-              },
-            ]}
-          />
-        ))}
-      </ul>
+       
     </div>
   );
 }

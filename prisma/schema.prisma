@@ -19,31 +19,100 @@ model User {
   hashedPassword String?
   accounts       Account[]
   sessions       Session[]
-  questions      Question[]
-  Result         Result[]
+  userInfo       UserInfo[]
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
 }
 
-model Question {
-  id       String   @id @default(cuid())
-  title    String
-  question String
-  userId   String
-  answer   String
-  result   Result[]
+model UserInfo {
+  id              String            @id @default(cuid())
+  userId          String
+  name            String?
+  work_city       String?
+  webUrl          String?
+  about           String?
+  work_experience Work_experience[]
+  speaking        Speaking[]
+  writing         Writing[]
+  sideProject     SideProject[]
+  education       Education[]
+  contact         Contact[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Result {
-  id         String @id @default(cuid())
-  userId     String
-  QuestionId String
-  text       String
+model WorkImage {
+  id               String  @id @default(cuid())
+  imageUrl         String?
+  workExperienceId String
 
-  question Question @relation(fields: [QuestionId], references: [id], onDelete: Cascade)
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workExperience Work_experience @relation(fields: [workExperienceId], references: [id], onDelete: Cascade)
+}
+
+model Work_experience {
+  id         String  @id @default(cuid())
+  startYear  String?
+  endYear    String?
+  Company    String?
+  City       String?
+  url        String?
+  userInfoId String
+
+  images   WorkImage[]
+  userinfo UserInfo    @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
+}
+
+model Writing {
+  id         String   @id @default(cuid())
+  userInfoId String
+  year       String?
+  title      String?
+  teamInfo   String?
+  url        String?
+  url2       String?
+  userinfo   UserInfo @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
+}
+
+model Speaking {
+  id         String   @id @default(cuid())
+  userInfoId String
+  year       String?
+  title      String?
+  city       String?
+  url        String?
+  url2       String?
+  userinfo   UserInfo @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
+}
+
+model SideProject {
+  id         String   @id @default(cuid())
+  userInfoId String
+  year       String?
+  title      String?
+  url        String?
+  userinfo   UserInfo @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
+}
+
+model Education {
+  id         String   @id @default(cuid())
+  userInfoId String
+  startYear  String?
+  endYear    String?
+  title      String?
+  city       String?
+  userinfo   UserInfo @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
+}
+
+model Contact {
+  id         String   @id @default(cuid())
+  userInfoId String
+  Threads    String?
+  Figma      String?
+  Instagram  String?
+  Bluesky    String?
+  Mastodon   String?
+  X          String?
+  userinfo   UserInfo @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
 }
 
 model Account {

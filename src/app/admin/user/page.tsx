@@ -63,14 +63,6 @@ export default function AdminPage() {
         <div className="flex w-[500px] justify-around">
           <button
             onClick={() => {
-              router.push("/admin/question");
-            }}
-            className="h-[50px] w-[150px] rounded-md bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-blue-700"
-          >
-            question
-          </button>
-          <button
-            onClick={() => {
               signOut({ callbackUrl: "/login" });
             }}
             className="h-[50px] w-[150px] rounded-md bg-red-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-red-700"
