@@ -54,9 +54,6 @@ export const postRouter = createTRPCRouter({
     }),
 
   getQuestion: protectedProcedure.query(({ ctx }) => {
-    if (ctx.session.user.role !== "admin") {
-      throw new Error("admin baih ystoi");
-    }
     return ctx.db.question.findMany();
   }),
 });

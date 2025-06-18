@@ -27,12 +27,9 @@ export default function AdminPage() {
   const createQ = api.question.createQuestion.useMutation({
     onSuccess: () => {
       alert("amjilttai asuult vvslee");
+      router.push("/admin/question");
     },
     onError: (err) => {
-      alert("🔥 tRPC алдаа:" + err);
-      alert("💬 Зурвас:" + err.message);
-      alert("📦 Бүтэн:" + JSON.stringify(err, null, 2));
-      alert("amjiltgvi bolloo: " + err.message);
       alert("amjiltgvi bolloo: " + err.message);
     },
   });
@@ -48,6 +45,10 @@ export default function AdminPage() {
       question: text,
       answer,
     });
+
+    setText("");
+    setAnswer("");
+    setTitle("");
   };
 
   if (status === "loading" || isLoading) {
