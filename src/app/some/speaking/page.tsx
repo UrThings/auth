@@ -12,7 +12,8 @@ type Speaking = {
   url2: string;
 };
 
-export default function Speaking() {
+export default function Speaking({ speakingData }: { speakingData: Speaking[] }) 
+ {
   const [addSpeakingButton, setAddSpeakingButton] = useState(false);
 
   // Form state
@@ -22,29 +23,14 @@ export default function Speaking() {
   const [url, setUrl] = useState("");
   const [url2, setUrl2] = useState("");
 
-  const [speakings, setSpeakings] = useState<Speaking[]>([
-    {
-      year: "2023",
-      title: "My First Speaking",
-      city: "los angelas",
-      url: "https://example.com",
-      url2: "https://example.com/embed",
-    },
-    {
-      year: "2024",
-      title: "Second Speaking",
-      city: "Someplace",
-      url: "https://example2.com",
-      url2: "https://example.com/embed",
-    },
-  ]);
+  const [speakings, setSpeakings] = useState<Speaking[]>(speakingData);
 
   const router = useRouter();
 
   const handleAddSpeaking = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!year || !title || !city || !url || !url2) {
+    if (!year || !title || !city || !url ) {
       alert("Бүх талбарыг бөглөнө үү");
       return;
     }
@@ -172,7 +158,7 @@ export default function Speaking() {
       )}
 
       {/* Speakings List */}
-      <div className="space-y-6">
+      {speakings[0]?.year && <div className="space-y-6">
         {speakings.map((speaking, idx) => (
           <div key={idx} className="flex flex-row gap-30 pb-4">
             <div className="text-md flex text-gray-400">
@@ -202,7 +188,7 @@ export default function Speaking() {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   );
 }

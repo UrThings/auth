@@ -14,7 +14,13 @@ type Work = {
   url: string;
 };
 
-export default function WorkExperience() {
+export default function WorkExperience({
+  workexperience = [],
+}: {
+  workexperience?: Work[];
+}) {
+  const [works, setWorks] = useState<Work[]>(workexperience);
+
   const [addWorkButton, setAddWorkButton] = useState(false);
 
   // Form-ийн state
@@ -24,27 +30,7 @@ export default function WorkExperience() {
   const [city, setCity] = useState("");
   const [images, setImages] = useState<string[]>([]);
 
-  const [works, setWorks] = useState<Work[]>([
-    {
-      startDate: "2017",
-      endDate: "Now",
-      company: "Senior Designer at Magic Design Co",
-      city: "San Francisco, CA",
-      img: [
-        "https://i.pinimg.com/736x/46/b5/c7/46b5c7e944c2eb3cc3584d9bec415fa3.jpg",
-        "https://i.pinimg.com/736x/16/81/64/1681648ffb5f7fd4439c3788f0dcdd26.jpg",
-      ],
-      url: "facebook.com",
-    },
-    {
-      startDate: "2020",
-      endDate: "2024",
-      company: "Junior Designer at Magic Design Co",
-      city: "San Francisco, CA",
-      img: [],
-      url: "facebook.com",
-    },
-  ]);
+  let length = works.length - 1;
 
   const router = useRouter();
 
@@ -197,42 +183,50 @@ export default function WorkExperience() {
       )}
 
       {/* Work List */}
-      <div className="space-y-6">
-        {works.map((work, idx) => (
-          <div key={idx} className="flex flex-row gap-16 pb-2">
-            <div className="text-md flex gap-2 text-gray-400">
-              <EditableText
-                value={work.startDate}
-                onSave={() => setStartDate}
-              />
-              <div>-</div>
-              <EditableText value={work.endDate} onSave={() => setEndDate} />
-            </div>
-            <div>
-              <EditableText
-                className="text-md mb-[3px] cursor-pointer hover:underline"
-                value={work.company}
-                onSave={() => setCompany}
-              />
-              <EditableText
-                className="text-gray-600"
-                value={work.city}
-                onSave={() => setCity}
-              />
-              <div className="mt-8 flex gap-5 overflow-x-auto">
-                {work.img.map((imgUrl, i) => (
-                  <img
-                    key={i}
-                    className="h-[150px] w-auto rounded-lg"
-                    src={imgUrl}
-                    alt={`Work image ${i + 1}`}
+
+      {works.length > 0 && works[works.length - 1]?.company && (
+        <div className="space-y-6">
+          {works
+            .filter((work) => work.company != null && work.company !== "")
+            .map((work, idx) => (
+              <div key={idx} className="flex flex-row pb-2 gap-16">
+                <div className="text-md flex gap-2 text-gray-400">
+                  <EditableText
+                    value={work.startDate}
+                    onSave={() => setStartDate}
                   />
-                ))}
+                  <div>-</div>
+                  <EditableText
+                    value={work.endDate}
+                    onSave={() => setEndDate}
+                  />
+                </div>
+                <div>
+                  <EditableText
+                    className="text-md mb-[3px] cursor-pointer hover:underline"
+                    value={work.company}
+                    onSave={() => setCompany}
+                  />
+                  <EditableText
+                    className="text-gray-600"
+                    value={work.city}
+                    onSave={() => setCity}
+                  />
+                  <div className="mt-8 flex gap-5 overflow-x-auto">
+                    {work.img.map((imgUrl, i) => (
+                      <img
+                        key={i}
+                        className="h-[150px] w-auto rounded-lg"
+                        src={imgUrl}
+                        alt={`Work image ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -7,6 +7,7 @@ import {
 } from "~/server/api/trpc";
 import { hash } from "bcryptjs";
 import { error } from "console";
+import type { userInfo } from "os";
 
 export const authRouter = createTRPCRouter({
   register: publicProcedure
@@ -28,13 +29,63 @@ export const authRouter = createTRPCRouter({
 
       const hashedPassword = await hash(input.password, 12);
 
-      await ctx.db.user.create({
+      const signUser = await ctx.db.user.create({
         data: {
           name: input.name,
           email: input.email,
           hashedPassword,
         },
       });
+      const user = await ctx.db.userInfo.create({
+        data: {
+          userId: signUser?.id ? signUser?.id : "undefined"
+        }
+      })
+
+      
+
+      const userWork = await ctx.db.work_experience.create({
+        data: {
+          userInfoId: user?.id ? user?.id : "undefined"
+        }
+      })
+
+      await ctx.db.workImage.create({
+        data: {
+          workExperienceId : userWork?.id ? userWork?.id : "undefined"
+        }
+      })
+
+
+      await ctx.db.writing.create({
+        data: {
+          userInfoId: user?.id ? user?.id : "undefined"
+        }
+      })
+
+      await ctx.db.speaking.create({
+        data: {
+          userInfoId: user?.id ? user?.id : "undefined"
+        }
+      })
+
+      await ctx.db.sideProject.create({
+        data: {
+          userInfoId: user?.id ? user?.id : "undefined"
+        }
+      })
+
+      await ctx.db.education.create({
+        data: {
+          userInfoId: user?.id ? user?.id : "undefined"
+        }
+      })
+
+      await ctx.db.contact.create({
+        data: {
+          userInfoId: user?.id ? user?.id : "undefined"
+        }
+      })
 
       return { success: true };
     }),

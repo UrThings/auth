@@ -10,7 +10,9 @@ type Education = {
   city: string;
 };
 
-export default function Education() {
+export default function Education({ educationData }: { educationData: Education[] }) {
+
+
   const [addEducationButton, setAddEducationButton] = useState(false);
 
   // Form state
@@ -19,20 +21,7 @@ export default function Education() {
   const [title, setTitle] = useState("");
   const [city, setCity] = useState("");
 
-  const [educations, setEducations] = useState<Education[]>([
-    {
-      startYear: "2018",
-      endYear: "2022",
-      title: "Bachelor of Computer Science",
-      city: "Ulaanbaatar",
-    },
-    {
-      startYear: "2023",
-      endYear: "2025",
-      title: "Master's in Software Engineering",
-      city: "Ulaanbaatar",
-    },
-  ]);
+  const [educations, setEducations] = useState<Education[]>(educationData);
 
   const handleAddEducation = (e: React.FormEvent) => {
     e.preventDefault();
@@ -163,7 +152,7 @@ export default function Education() {
       )}
 
       {/* Education List */}
-      <div className="space-y-6">
+      {educations[0]?.title && <div className="space-y-6">
         {educations.map((education, idx) => (
           <div key={idx} className="flex flex-row gap-16 pb-4">
             <div className="text-md flex gap-2 text-gray-400">
@@ -191,7 +180,7 @@ export default function Education() {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   );
 }

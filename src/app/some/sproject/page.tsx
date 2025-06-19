@@ -10,7 +10,8 @@ type Project = {
   url: string;
 };
 
-export default function SideProject() {
+export default function SideProject({ projectData }: { projectData: Project[] }) {
+
   const [addProjectButton, setAddProjectButton] = useState(false);
 
   // Form state
@@ -18,18 +19,7 @@ export default function SideProject() {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
 
-  const [projects, setProjects] = useState<Project[]>([
-    {
-      year: "2023",
-      title: "Odoo Custom Module Development",
-      url: "odoo-custom-module",
-    },
-    {
-      year: "2024",
-      title: "Odoo ERP Integration Project",
-      url: "odoo-erp-integration",
-    },
-  ]);
+  const [projects, setProjects] = useState<Project[]>(projectData);
 
   const router = useRouter();
 
@@ -142,7 +132,7 @@ export default function SideProject() {
       )}
 
       {/* Projects List */}
-      <div className="space-y-6">
+      {projects[0]?.year && <div className="space-y-6">
         {projects.map((project, idx) => (
           <div key={idx} className="flex flex-row gap-30 pb-4">
             <div className="text-md flex text-gray-400">
@@ -162,7 +152,7 @@ export default function SideProject() {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   );
 }

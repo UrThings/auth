@@ -217,4 +217,28 @@ export const profileRouter = createTRPCRouter({
 
       return { success: true };
     }),
+    getUserProfileById: protectedProcedure
+  .input(z.object({ userId: z.string() }))
+  .query(async ({ ctx, input }) => {
+    const userInfo = await ctx.db.userInfo.findFirst({
+      where: { userId: input.userId },
+      include: {
+        contact: true,
+        work_experience: {
+          include: {
+            images: true,
+          },
+        },
+        speaking: true,
+        writing: true,
+        sideProject: true,
+        education: true,
+      },
+    });
+
+    if (!userInfo) throw new Error("User info not found");
+
+    return userInfo;
+  }),
+
 });
